@@ -1,13 +1,14 @@
 import React from "react";
-import { Text, View, StyleSheet, Image } from "react-native";
+import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Player as PlayerType } from "../types";
+import bluechip from "../assets/images/chips/bluechip.png";
 
 export default function Player({ player }: { player: PlayerType }) {
   const { name, avatarUrl, isActive, chips } = player;
   const playerSize = 70;
   const styles = dynamicStyles(playerSize);
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container}>
       <View style={styles.player}>
         <Image
           source={{ uri: avatarUrl }}
@@ -38,9 +39,15 @@ export default function Player({ player }: { player: PlayerType }) {
           />
         </View>
       </View>
-      {/* <Text>{name}</Text>
-      <Text>{chips}</Text> */}
-    </View>
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoContainerName} lineBreakMode="clip" numberOfLines={1}>{name}</Text>
+        <Text style={styles.infoContainerChips}>{chips}</Text>
+      </View>
+      <View style={styles.betContainer}>
+        <Image source={bluechip} style={styles.betChip} />
+        <Text style={styles.betText}>$100</Text>
+      </View>
+    </TouchableOpacity>
   );
 }
 
@@ -71,5 +78,40 @@ const dynamicStyles = (playerSize: number) =>
     statusActive: {
       borderWidth: 5,
       borderColor: "blue",
+    },
+    infoContainer: {
+      width: playerSize * 1,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "rgba(0,0,0,0.4)",
+      borderRadius: 5,
+      marginTop: -10,
+      padding: 2,
+    },
+    infoContainerName: {
+      color: "white",
+      fontSize: 12,
+    },
+    infoContainerChips: {
+      color: "white",
+      fontSize: 12,
+    },
+    betContainer: {
+      flexDirection: "row",
+      position: "absolute",
+      top: 0,
+      right: (playerSize / 1.5) * -1,
+      backgroundColor: "#dcfcb5",
+      padding: 2,
+      borderRadius: 5,
+    },
+    betChip: {
+      width: 15,
+      height: 15,
+      marginRight: 2,
+    },
+    betText: {
+      color: "black",
+      fontSize: 12,
     },
   });
