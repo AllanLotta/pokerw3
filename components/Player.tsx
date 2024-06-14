@@ -17,6 +17,8 @@ export default function Player({ player }: { player: PlayerType }) {
     cardHeight,
   });
 
+  const formattedChips = chips.toLocaleString();
+
   return (
     <TouchableOpacity
       style={styles.container}
@@ -58,18 +60,17 @@ export default function Player({ player }: { player: PlayerType }) {
         </View>
       </View>
       <View style={styles.infoContainer}>
-        <Text
-          style={styles.infoContainerName}
-          lineBreakMode="clip"
-          numberOfLines={1}
-        >
-          {name}
-        </Text>
-        <Text style={styles.infoContainerChips}>{chips}</Text>
+        <View style={styles.infoContainerTop}>
+          <Text style={styles.infoContainerTopName} numberOfLines={1}>{name}</Text>
+          <Text style={styles.infoContainerTopUserRank}>1st</Text>
+        </View>
+        <View style={styles.infoContainerBottom}>
+          <Text style={styles.infoContainerBottomChips}>${formattedChips}</Text>
+        </View>
       </View>
       <View style={styles.betContainer}>
         <Image source={bluechip} style={styles.betChip} />
-        <Text style={styles.betText}>100</Text>
+        <Text style={styles.betText}>{player.betAmount}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -129,21 +130,37 @@ const dynamicStyles = ({
       borderColor: "blue",
     },
     infoContainer: {
-      width: playerSize * 1,
+      width: playerSize * 1.5,
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: "rgba(0,0,0,0.4)",
+      backgroundColor: "rgba(0,0,0,0.6)",
       borderRadius: 5,
       marginTop: -10,
       padding: 2,
     },
-    infoContainerName: {
-      color: "white",
+    infoContainerTop: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      width: "100%",
+    },
+    infoContainerBottom: {
+      flexDirection: "row",
+      width: "100%",
+      backgroundColor: "#3f51b5",
+    },
+    infoContainerTopUserRank: {
+      color: "red",
       fontSize: 12,
     },
-    infoContainerChips: {
+    infoContainerTopName: {
       color: "white",
       fontSize: 12,
+      flex: 0.8,
+    },
+    infoContainerBottomChips: {
+      color: "yellow",
+      fontSize: 12,
+      fontWeight: "bold",
     },
     betContainer: {
       flexDirection: "row",
