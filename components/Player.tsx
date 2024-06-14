@@ -45,7 +45,7 @@ export default function Player({ player }: { player: PlayerType }) {
       </View>
       <View style={styles.betContainer}>
         <Image source={bluechip} style={styles.betChip} />
-        <Text style={styles.betText}>$100</Text>
+        <Text style={styles.betText}>100</Text>
       </View>
     </TouchableOpacity>
   );
@@ -102,8 +102,8 @@ const dynamicStyles = (playerSize: number) =>
       top: 0,
       right: (playerSize / 1.5) * -1,
       backgroundColor: "#dcfcb5",
-      padding: 2,
-      borderRadius: 5,
+      paddingRight: 5,
+      borderRadius: 10,
     },
     betChip: {
       width: 15,
