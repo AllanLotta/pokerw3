@@ -26,6 +26,7 @@ export const playersList: Player[] = [
     betAmount: 0,
     position: 0,
     hasFolded: false,
+    itsMe: false,
   },
   {
     id: "2",
@@ -43,6 +44,7 @@ export const playersList: Player[] = [
     betAmount: 0,
     position: 1,
     hasFolded: false,
+    itsMe: false,
   },
   {
     id: "3",
@@ -60,6 +62,7 @@ export const playersList: Player[] = [
     betAmount: 0,
     position: 2,
     hasFolded: false,
+    itsMe: true,
   },
   {
     id: "4",
@@ -77,6 +80,7 @@ export const playersList: Player[] = [
     betAmount: 0,
     position: 3,
     hasFolded: false,
+    itsMe: false,
   },
   {
     id: "5",
@@ -94,6 +98,7 @@ export const playersList: Player[] = [
     betAmount: 0,
     position: 4,
     hasFolded: false,
+    itsMe: false,
   },
   {
     id: "6",
@@ -111,6 +116,7 @@ export const playersList: Player[] = [
     betAmount: 0,
     position: 5,
     hasFolded: false,
+    itsMe: false,
   },
   // {
   //   id: "7",
@@ -128,6 +134,7 @@ export const playersList: Player[] = [
   //   betAmount: 0,
   //   position: 6,
   //   hasFolded: false,
+  // itsMe: false,
   // },
   // {
   //   id: "8",
@@ -145,6 +152,7 @@ export const playersList: Player[] = [
   //   betAmount: 0,
   //   position: 7,
   //   hasFolded: false,
+  // itsMe: false,
   // },
 ];
 

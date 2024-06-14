@@ -7,17 +7,24 @@ import diamond from "../assets/images/cards/diamond.svg";
 import club from "../assets/images/cards/club.svg";
 export default function Card({
   card,
-  playerCardVisible,
+  playerCardVisible = false,
+  isMyCard = false,
 }: {
   card: { suit: string; rank: string };
   playerCardVisible?: boolean;
+  isMyCard?: boolean;
 }) {
   const { suit, rank } = card;
+  // width of the card
   const defaultWidth = 30;
-  const defaultHeight = 40;
   const playerCardVisibleWidth = 40;
-  const playerCardVisibleHeight = 50;
-  const rankSize = playerCardVisible ? 18 : 16;
+  const myCardWidth = 50;
+  // size of the rank
+  const defaultRankSize = 16;
+  const myCardRankSize = 22;
+  const playerCardRankSize = 18;
+
+  const rankSize = playerCardVisible ? playerCardRankSize : isMyCard ? myCardRankSize : defaultRankSize;
 
   const suitIcon =
     suit === "hearts"
@@ -27,11 +34,11 @@ export default function Card({
       : suit === "diamonds"
       ? diamond
       : club;
-  const width = playerCardVisible ? playerCardVisibleWidth : defaultWidth;
-  const height = playerCardVisible ? playerCardVisibleHeight : defaultHeight;
+  const width = playerCardVisible ? playerCardVisibleWidth : isMyCard ? myCardWidth : defaultWidth;
+  const height = !isMyCard ? width * 1.3 : width * 1.2;
   const rankColor = suit === "hearts" || suit === "diamonds" ? "red" : "black";
 
-  const styles = dynamicStyles(width, height, rankColor, rankSize);
+  const styles = dynamicStyles(width, height, rankColor, rankSize, isMyCard);
 
   return (
     <View style={styles.container}>
@@ -41,7 +48,7 @@ export default function Card({
   );
 }
 
-const dynamicStyles = (width: number, height: number, rankColor: string, rankSize: number) =>
+const dynamicStyles = (width: number, height: number, rankColor: string, rankSize: number, isMyCard: boolean) =>
   StyleSheet.create({
     container: {
       width,
@@ -53,7 +60,7 @@ const dynamicStyles = (width: number, height: number, rankColor: string, rankSiz
       borderRadius: 5,
       backgroundColor: "#e3e3e3",
       borderWidth: 1,
-      borderColor: "rgba(0, 0, 0, 0.1)",
+      borderColor: !isMyCard ? "rgba(0, 0, 0, 0.1)" : "yellow",
       elevation: 1,
     },
     image: {

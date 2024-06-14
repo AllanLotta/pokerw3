@@ -11,6 +11,7 @@ export interface Player {
   betAmount: number; // The amount the player has bet in the current round
   position: number; // Player's position at the table (0 for dealer, 1 for next, etc.)
   hasFolded: boolean; // Whether the player has folded in the current hand
+  itsMe: boolean; // Whether the player is the current user
 }
 
 // Example card interface for the player's cards

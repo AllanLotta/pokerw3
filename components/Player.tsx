@@ -7,7 +7,8 @@ import Card from "./Card";
 export default function Player({ player }: { player: PlayerType }) {
   const [cardsVisible, setCardsVisible] = React.useState(false);
   const { name, avatarUrl, isActive, chips } = player;
-  const playerSize = 70;
+  const itsMe = player.itsMe;
+  const playerSize = itsMe ? 90 : 70;
   const cardWidth = cardsVisible ? 40 : 30;
   const cardHeight = cardsVisible ? 60 : 40;
 
@@ -19,17 +20,17 @@ export default function Player({ player }: { player: PlayerType }) {
 
   const formattedChips = chips.toLocaleString();
 
-  return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => setCardsVisible((old) => !old)}
-    >
-      <View style={styles.player}>
-        <Image
-          source={{ uri: avatarUrl }}
-          style={[styles.image, !isActive && styles.statusActive]}
-        />
-        <View
+  const handlePress = () => {
+    if (itsMe) {
+      return null;
+    }
+  setCardsVisible((old) => !old);
+  };
+
+  const PlayerCards = () => {
+    if (itsMe) return null;
+    return (
+      <View
           style={[styles.cardsContainer, cardsVisible && styles.cardsVisible]}
         >
           {!cardsVisible ? (
@@ -58,10 +59,50 @@ export default function Player({ player }: { player: PlayerType }) {
             ))
           )}
         </View>
+    );
+  }
+  return (
+    <TouchableOpacity
+      style={styles.container}
+      onPress={handlePress}
+    >
+      <View style={styles.player}>
+        <Image
+          source={{ uri: avatarUrl }}
+          style={[styles.image, !isActive && styles.statusActive]}
+        />
+        <PlayerCards />
+        {/* my cards - positioned at right of the user */}
+        {itsMe && <View
+          style={{
+            position: "absolute",
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            right: -playerSize,
+            // top: 0,
+            width: playerSize,
+            height: playerSize,
+            // backgroundColor: "red",
+          }}
+        >
+          {
+            player.cards.map((card, index) => (
+              <View
+                style={[index === 0 ? styles.cardLeft : styles.cardRight]}
+                key={index}
+              >
+                <Card card={card} isMyCard={true} />
+              </View>
+            ))
+          }
+        </View>}
       </View>
       <View style={styles.infoContainer}>
         <View style={styles.infoContainerTop}>
-          <Text style={styles.infoContainerTopName} numberOfLines={1}>{name}</Text>
+          <Text style={styles.infoContainerTopName} numberOfLines={1}>
+            {name}
+          </Text>
           <Text style={styles.infoContainerTopUserRank}>1st</Text>
         </View>
         <View style={styles.infoContainerBottom}>
@@ -70,7 +111,7 @@ export default function Player({ player }: { player: PlayerType }) {
       </View>
       <View style={styles.betContainer}>
         <Image source={bluechip} style={styles.betChip} />
-        <Text style={styles.betText}>{player.betAmount}</Text>
+        <Text style={styles.betText}>10{player.betAmount}</Text>
       </View>
     </TouchableOpacity>
   );
