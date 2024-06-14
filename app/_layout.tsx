@@ -1,7 +1,15 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, View, ImageBackground } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  ImageBackground,
+  Text,
+  Image,
+} from "react-native";
 import { useState } from "react";
 import background from "@/assets/images/background/background.jpg";
+import bluechip from "@/assets/images/chips/bluechip.png";
 import BottomAction from "@/components/BottomAction";
 import Player from "@/components/Player";
 import Card from "@/components/Card";
@@ -58,10 +66,16 @@ export default function PokerTable() {
               </View>
             );
           })}
-          <View style={styles.cardsContainer}>
-            {communityCards.map((card) => (
-              <Card key={card.id} card={card} />
-            ))}
+          <View style={styles.tableCenterContainer}>
+            <View style={styles.cardsContainer}>
+              {communityCards.map((card) => (
+                <Card key={card.id} card={card} />
+              ))}
+            </View>
+            <View style={styles.potContainer}>
+              <Image source={bluechip} style={styles.potImage} />
+              <Text style={styles.potText}>1k</Text>
+            </View>
           </View>
         </View>
         <BottomAction />
@@ -87,12 +101,35 @@ const dynamicStyles = (containerDimensions: {
       borderColor: "rgba(800, 800, 800, 0.3)",
       borderWidth: 2,
     },
-    cardsContainer: {
+    tableCenterContainer: {
       alignSelf: "center",
       marginTop: containerDimensions.height * 0.35,
+    },
+    cardsContainer: {
       flexDirection: "row",
       justifyContent: "space-between",
       zIndex: -1,
+    },
+    potContainer: {
+      flexDirection: "row",
+      alignSelf: "center",
+      justifyContent: "center",
+      alignItems: "center",
+      paddingRight: 5,
+      marginTop: 10,
+      // padding: 2,
+      backgroundColor: "#dcfcb5",
+      borderRadius: 10,
+    },
+    potImage: {
+      width: 20,
+      height: 20,
+      marginRight: 3,
+    },
+    potText: {
+      color: "black",
+      fontSize: 14,
+      fontWeight: "bold",
     },
     player: {
       position: "absolute",
