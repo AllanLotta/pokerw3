@@ -2,45 +2,69 @@ import React from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Player as PlayerType } from "../types";
 import bluechip from "../assets/images/chips/bluechip.png";
+import Card from "./Card";
 
 export default function Player({ player }: { player: PlayerType }) {
+  const [cardsVisible, setCardsVisible] = React.useState(false);
   const { name, avatarUrl, isActive, chips } = player;
   const playerSize = 70;
-  const styles = dynamicStyles(playerSize);
+  const cardWidth = cardsVisible ? 40 : 30;
+  const cardHeight = cardsVisible ? 60 : 40;
+
+  const styles = dynamicStyles({
+    playerSize,
+    cardWidth,
+    cardHeight,
+  });
+
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => setCardsVisible((old) => !old)}
+    >
       <View style={styles.player}>
         <Image
           source={{ uri: avatarUrl }}
           style={[styles.image, !isActive && styles.statusActive]}
         />
-        <View style={styles.cardsContainer}>
-          <Image
-            source={{
-              uri: "https://i.ebayimg.com/images/g/hcsAAOSwfPpgExnB/s-l1200.webp",
-            }}
-            style={{
-              width: 30,
-              height: 40,
-              borderRadius: 5,
-            }}
-          />
-          <Image
-            source={{
-              uri: "https://i.ebayimg.com/images/g/hcsAAOSwfPpgExnB/s-l1200.webp",
-            }}
-            style={{
-              width: 30,
-              height: 40,
-              position: "absolute",
-              left: 20,
-              transform: [{ rotate: "10deg" }],
-            }}
-          />
+        <View
+          style={[styles.cardsContainer, cardsVisible && styles.cardsVisible]}
+        >
+          {!cardsVisible ? (
+            <>
+              <Image
+                source={{
+                  uri: "https://i.ebayimg.com/images/g/hcsAAOSwfPpgExnB/s-l1200.webp",
+                }}
+                style={styles.cardLeft}
+              />
+              <Image
+                source={{
+                  uri: "https://i.ebayimg.com/images/g/hcsAAOSwfPpgExnB/s-l1200.webp",
+                }}
+                style={styles.cardRight}
+              />
+            </>
+          ) : (
+            player.cards.map((card, index) => (
+              <View
+                style={[index === 0 ? styles.cardLeft : styles.cardRight]}
+                key={index}
+              >
+                <Card card={card} playerCardVisible={true} />
+              </View>
+            ))
+          )}
         </View>
       </View>
       <View style={styles.infoContainer}>
-        <Text style={styles.infoContainerName} lineBreakMode="clip" numberOfLines={1}>{name}</Text>
+        <Text
+          style={styles.infoContainerName}
+          lineBreakMode="clip"
+          numberOfLines={1}
+        >
+          {name}
+        </Text>
         <Text style={styles.infoContainerChips}>{chips}</Text>
       </View>
       <View style={styles.betContainer}>
@@ -51,7 +75,15 @@ export default function Player({ player }: { player: PlayerType }) {
   );
 }
 
-const dynamicStyles = (playerSize: number) =>
+const dynamicStyles = ({
+  playerSize,
+  cardWidth,
+  cardHeight,
+}: {
+  playerSize: number;
+  cardWidth: number;
+  cardHeight: number;
+}) =>
   StyleSheet.create({
     container: {
       position: "absolute",
@@ -70,10 +102,27 @@ const dynamicStyles = (playerSize: number) =>
     },
     cardsContainer: {
       flexDirection: "row",
-      width: 50,
+      justifyContent: "center",
       position: "absolute",
+      alignSelf: "center",
       marginTop: -20,
       zIndex: -1,
+    },
+    cardLeft: {
+      width: cardWidth,
+      height: cardHeight,
+      borderRadius: 5,
+      transform: [{ rotate: "-5deg" }],
+    },
+    cardRight: {
+      width: cardWidth,
+      height: cardWidth * 1.3,
+      marginLeft: -cardWidth / 4,
+      transform: [{ rotate: "10deg" }],
+    },
+    cardsVisible: {
+      marginTop: 0,
+      zIndex: 1,
     },
     statusActive: {
       borderWidth: 5,
@@ -113,5 +162,6 @@ const dynamicStyles = (playerSize: number) =>
     betText: {
       color: "black",
       fontSize: 12,
+      fontWeight: "bold",
     },
   });

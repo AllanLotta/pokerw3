@@ -7,10 +7,18 @@ import diamond from "../assets/images/cards/diamond.svg";
 import club from "../assets/images/cards/club.svg";
 export default function Card({
   card,
+  playerCardVisible,
 }: {
   card: { suit: string; rank: string };
+  playerCardVisible?: boolean;
 }) {
   const { suit, rank } = card;
+  const defaultWidth = 30;
+  const defaultHeight = 40;
+  const playerCardVisibleWidth = 40;
+  const playerCardVisibleHeight = 50;
+  const rankSize = playerCardVisible ? 18 : 16;
+
   const suitIcon =
     suit === "hearts"
       ? heart
@@ -19,11 +27,11 @@ export default function Card({
       : suit === "diamonds"
       ? diamond
       : club;
-  const width = 30;
-  const height = 40;
+  const width = playerCardVisible ? playerCardVisibleWidth : defaultWidth;
+  const height = playerCardVisible ? playerCardVisibleHeight : defaultHeight;
   const rankColor = suit === "hearts" || suit === "diamonds" ? "red" : "black";
 
-  const styles = dynamicStyles(width, height, rankColor);
+  const styles = dynamicStyles(width, height, rankColor, rankSize);
 
   return (
     <View style={styles.container}>
@@ -33,17 +41,20 @@ export default function Card({
   );
 }
 
-const dynamicStyles = (width: number, height: number, rankColor: string) =>
+const dynamicStyles = (width: number, height: number, rankColor: string, rankSize: number) =>
   StyleSheet.create({
     container: {
       width,
       height,
-      padding: 5,
+      padding: 2,
       marginRight: 5,
       alignItems: "center",
       justifyContent: "flex-end",
       borderRadius: 5,
       backgroundColor: "#e3e3e3",
+      borderWidth: 1,
+      borderColor: "rgba(0, 0, 0, 0.1)",
+      elevation: 1,
     },
     image: {
       height: width * 0.5,
@@ -54,7 +65,7 @@ const dynamicStyles = (width: number, height: number, rankColor: string) =>
       top: 0,
       left: 5,
       fontWeight: "bold",
-      fontSize: 16,
+      fontSize: rankSize,
       color: rankColor,
     },
   });
