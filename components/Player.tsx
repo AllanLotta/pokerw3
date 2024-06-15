@@ -86,6 +86,7 @@ export default function Player({ player }: { player: PlayerType }) {
         />
         <PlayerCards />
         <MyCards />
+        {!itsMe && <Bet />}
       </View>
       <View style={styles.infoContainer}>
         <View style={styles.infoContainerTop}>
@@ -97,7 +98,7 @@ export default function Player({ player }: { player: PlayerType }) {
         <View style={styles.infoContainerBottom}>
           <Text style={styles.infoContainerBottomChips}>${formattedChips}</Text>
         </View>
-        <Bet />
+        {itsMe && <Bet />}
       </View>
     </TouchableOpacity>
   );
