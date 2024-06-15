@@ -24,94 +24,80 @@ export default function Player({ player }: { player: PlayerType }) {
     if (itsMe) {
       return null;
     }
-  setCardsVisible((old) => !old);
+    setCardsVisible((old) => !old);
   };
 
   const PlayerCards = () => {
     if (itsMe) return null;
     return (
       <View
-          style={[styles.cardsContainer, cardsVisible && styles.cardsVisible]}
-        >
-          {!cardsVisible ? (
-            <>
-              <Image
-                source={{
-                  uri: "https://i.ebayimg.com/images/g/hcsAAOSwfPpgExnB/s-l1200.webp",
-                }}
-                style={styles.cardLeft}
-              />
-              <Image
-                source={{
-                  uri: "https://i.ebayimg.com/images/g/hcsAAOSwfPpgExnB/s-l1200.webp",
-                }}
-                style={styles.cardRight}
-              />
-            </>
-          ) : (
-            player.cards.map((card, index) => (
-              <View
-                style={[index === 0 ? styles.cardLeft : styles.cardRight]}
-                key={index}
-              >
-                <Card card={card} playerCardVisible={true} />
-              </View>
-            ))
-          )}
-        </View>
+        style={[
+          styles.playerCardsContainer,
+          cardsVisible && styles.cardsVisible,
+        ]}
+      >
+        {player.cards.map((card, index) => (
+          <View
+            style={[index === 0 ? styles.cardLeft : styles.cardRight]}
+            key={index}
+          >
+            <Card
+              card={card}
+              type={cardsVisible ? "playerVisible" : "playerHidden"}
+            />
+          </View>
+        ))}
+      </View>
     );
-  }
+  };
+
+  const MyCards = () => {
+    if (!itsMe) return null;
+    return (
+      <View style={styles.myCardsContainer}>
+        {player.cards.map((card, index) => (
+          <View
+            style={[index === 0 ? styles.cardLeft : styles.cardRight]}
+            key={index}
+          >
+            <Card card={card} type="my" />
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const Bet = () => {
+    if (player.betAmount === 0) return null;
+    return (
+      <View style={styles.betContainer}>
+        <Image source={bluechip} style={styles.betChip} />
+        <Text style={styles.betText}>{player.betAmount}</Text>
+      </View>
+    );
+  };
+
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={handlePress}
-    >
+    <TouchableOpacity style={styles.container} onPress={handlePress}>
       <View style={styles.player}>
         <Image
           source={{ uri: avatarUrl }}
           style={[styles.image, !isActive && styles.statusActive]}
         />
         <PlayerCards />
-        {/* my cards - positioned at right of the user */}
-        {itsMe && <View
-          style={{
-            position: "absolute",
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            right: -playerSize,
-            // top: 0,
-            width: playerSize,
-            height: playerSize,
-            // backgroundColor: "red",
-          }}
-        >
-          {
-            player.cards.map((card, index) => (
-              <View
-                style={[index === 0 ? styles.cardLeft : styles.cardRight]}
-                key={index}
-              >
-                <Card card={card} isMyCard={true} />
-              </View>
-            ))
-          }
-        </View>}
+        <MyCards />
       </View>
       <View style={styles.infoContainer}>
         <View style={styles.infoContainerTop}>
           <Text style={styles.infoContainerTopName} numberOfLines={1}>
             {name}
           </Text>
-          <Text style={styles.infoContainerTopUserRank}>1st</Text>
+          {/* <Text style={styles.infoContainerTopUserRank}>1st</Text> */}
         </View>
         <View style={styles.infoContainerBottom}>
           <Text style={styles.infoContainerBottomChips}>${formattedChips}</Text>
         </View>
-      </View>
-      <View style={styles.betContainer}>
-        <Image source={bluechip} style={styles.betChip} />
-        <Text style={styles.betText}>10{player.betAmount}</Text>
+        <Bet />
       </View>
     </TouchableOpacity>
   );
@@ -136,13 +122,14 @@ const dynamicStyles = ({
     },
     player: {
       alignItems: "flex-end",
+      borderColor: "red",
     },
     image: {
       width: playerSize,
       height: playerSize,
       borderRadius: playerSize / 2,
     },
-    cardsContainer: {
+    playerCardsContainer: {
       flexDirection: "row",
       justifyContent: "center",
       position: "absolute",
@@ -150,17 +137,21 @@ const dynamicStyles = ({
       marginTop: -20,
       zIndex: -1,
     },
+    myCardsContainer: {
+      width: playerSize,
+      height: playerSize,
+      position: "absolute",
+      flexDirection: "row",
+      justifyContent: "flex-start",
+      alignItems: "center",
+      right: -playerSize,
+    },
     cardLeft: {
-      width: cardWidth,
-      height: cardHeight,
       borderRadius: 5,
-      transform: [{ rotate: "-5deg" }],
     },
     cardRight: {
-      width: cardWidth,
-      height: cardWidth * 1.3,
-      marginLeft: -cardWidth / 4,
-      transform: [{ rotate: "10deg" }],
+      marginLeft: -cardWidth / 2,
+      transform: [{ rotate: "5deg" }],
     },
     cardsVisible: {
       marginTop: 0,
@@ -171,7 +162,7 @@ const dynamicStyles = ({
       borderColor: "blue",
     },
     infoContainer: {
-      width: playerSize * 1.5,
+      width: playerSize * 1.2,
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "rgba(0,0,0,0.6)",
@@ -187,7 +178,8 @@ const dynamicStyles = ({
     infoContainerBottom: {
       flexDirection: "row",
       width: "100%",
-      backgroundColor: "#3f51b5",
+      borderRadius: 3,
+      backgroundColor: "black",
     },
     infoContainerTopUserRank: {
       color: "red",
@@ -196,7 +188,7 @@ const dynamicStyles = ({
     infoContainerTopName: {
       color: "white",
       fontSize: 12,
-      flex: 0.8,
+      flex: 1, // flex 0.8 for name, 0.2 for rank
     },
     infoContainerBottomChips: {
       color: "yellow",
@@ -206,8 +198,7 @@ const dynamicStyles = ({
     betContainer: {
       flexDirection: "row",
       position: "absolute",
-      top: 0,
-      right: (playerSize / 1.5) * -1,
+      right: -(playerSize * 1.2) / 2,
       backgroundColor: "#dcfcb5",
       paddingRight: 5,
       borderRadius: 10,
