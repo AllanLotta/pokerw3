@@ -5,7 +5,7 @@ import bluechip from "../assets/images/chips/bluechip.png";
 import Card from "./Card";
 import { playerImageSize } from "../utils";
 
-export default function Player({ player }: { player: PlayerType }) {
+export default function PlayerSmall({ player }: { player: PlayerType }) {
   const [cardsVisible, setCardsVisible] = React.useState(false);
   const { name, avatarUrl, isActive, chips } = player;
   const itsMe = player.itsMe;

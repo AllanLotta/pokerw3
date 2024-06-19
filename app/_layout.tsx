@@ -13,7 +13,8 @@ import bluechip from "@/assets/images/chips/bluechip.png";
 import BottomAction from "@/components/BottomAction";
 import Player from "@/components/Player";
 import Card from "@/components/Card";
-import { playersList, communityCards } from "@/utils";
+import { playersList, communityCards, playerImageSize } from "@/utils";
+import PlayerSmall from "@/components/PlayerSmall";
 
 export default function PokerTable() {
   const [containerDimensions, setContainerDimensions] = useState({
@@ -21,7 +22,7 @@ export default function PokerTable() {
     height: 0,
   });
 
-  const playerSize = 60;
+  const playerSize = playerImageSize;
   const styles = dynamicStyles(containerDimensions);
 
   const getUserPosition = (
@@ -62,14 +63,14 @@ export default function PokerTable() {
             );
             return (
               <View key={index} style={{ left: x, top: y }}>
-                <Player player={player} />
+                <PlayerSmall player={player} />
               </View>
             );
           })}
           <View style={styles.tableCenterContainer}>
             <View style={styles.cardsContainer}>
               {communityCards.map((card) => (
-                <Card key={card.id} card={card} />
+                <Card key={card.id} card={card} type="community" />
               ))}
             </View>
             <View style={styles.potContainer}>

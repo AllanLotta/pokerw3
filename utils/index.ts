@@ -1,4 +1,12 @@
 import { Player } from "../types";
+import { Dimensions } from "react-native";
+// device orientation: landscape
+const { width, height } = Dimensions.get("screen");
+export const playerImageSize = height * 0.15;
+export const playerInfoContainerSize = playerImageSize * 2;
+export const playerInfoContainerPadding = 5;
+export const playerVisibleCardsSize = playerImageSize * 0.8;
+export const playerMyCardsSize = playerImageSize * 1.2;
 
 const randomAvatarUrl = () => {
   let url = "https://xsgames.co/randomusers/assets/avatars/";
@@ -118,42 +126,42 @@ export const playersList: Player[] = [
     hasFolded: false,
     itsMe: false,
   },
-  // {
-  //   id: "7",
-  //   name: "Eve Martinez",
-  //   avatarUrl: randomAvatarUrl(),
-  //   chips: 1300,
-  //   isDealer: false,
-  //   isBigBlind: false,
-  //   isSmallBlind: false,
-  //   isActive: true,
-  //   cards: [
-  //     { suit: "hearts", rank: "5" },
-  //     { suit: "spades", rank: "10" },
-  //   ],
-  //   betAmount: 0,
-  //   position: 6,
-  //   hasFolded: false,
-  // itsMe: false,
-  // },
-  // {
-  //   id: "8",
-  //   name: "Frank Harris",
-  //   avatarUrl: randomAvatarUrl(),
-  //   chips: 1700,
-  //   isDealer: false,
-  //   isBigBlind: false,
-  //   isSmallBlind: false,
-  //   isActive: true,
-  //   cards: [
-  //     { suit: "diamonds", rank: "A" },
-  //     { suit: "clubs", rank: "7" },
-  //   ],
-  //   betAmount: 0,
-  //   position: 7,
-  //   hasFolded: false,
-  // itsMe: false,
-  // },
+  {
+    id: "7",
+    name: "Eve Martinez",
+    avatarUrl: randomAvatarUrl(),
+    chips: 1300,
+    isDealer: false,
+    isBigBlind: false,
+    isSmallBlind: false,
+    isActive: true,
+    cards: [
+      { suit: "hearts", rank: "5" },
+      { suit: "spades", rank: "10" },
+    ],
+    betAmount: 0,
+    position: 6,
+    hasFolded: false,
+  itsMe: false,
+  },
+  {
+    id: "8",
+    name: "Frank Harris",
+    avatarUrl: randomAvatarUrl(),
+    chips: 1700,
+    isDealer: false,
+    isBigBlind: false,
+    isSmallBlind: false,
+    isActive: true,
+    cards: [
+      { suit: "diamonds", rank: "A" },
+      { suit: "clubs", rank: "7" },
+    ],
+    betAmount: 0,
+    position: 7,
+    hasFolded: false,
+  itsMe: false,
+  },
 ];
 
 export const communityCards = [
